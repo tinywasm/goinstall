@@ -91,13 +91,13 @@ func WithAfterInstall(f func(goPath string) error) Option
 
 | Stage | Description | Completed |
 |-------|-------------|-----------|
-| 1 | `scripts/install.sh` — bash script (detect OS/arch, download, extract, symlink, verify) | [ ] |
-| 2 | `scripts/install.ps1` — PowerShell script (download MSI, silent install, verify) | [ ] |
-| 3 | `goinstall.go` — config, options, constants, embed | [ ] |
-| 4 | `detect.go` — GetVersion, IsInstalled, GetPath | [ ] |
-| 5 | `install.go` — platform dispatch, removeExisting, run embedded script | [ ] |
-| 6 | `ensure.go` — EnsureInstalled + AfterInstall callback | [ ] |
-| 7 | `cmd/goinstall/main.go` — CLI entry point | [ ] |
+| 1 | `scripts/install.sh` — bash script (detect OS/arch, download, extract, symlink, verify) | [x] |
+| 2 | `scripts/install.ps1` — PowerShell script (download MSI, silent install, verify) | [x] |
+| 3 | `goinstall.go` — config, options, constants, embed | [x] |
+| 4 | `detect.go` — GetVersion, IsInstalled, GetPath | [x] |
+| 5 | `install.go` — platform dispatch, run embedded script (cleanup handled by script) | [x] |
+| 6 | `ensure.go` — EnsureInstalled + AfterInstall callback | [x] |
+| 7 | `cmd/goinstall/main.go` — CLI entry point | [x] |
 
 ## Flow Diagram
 

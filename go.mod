@@ -1,3 +1,3 @@
-module github.com/cdvelop/goinstall
+module github.com/tinywasm/goinstall
 
 go 1.25.2
