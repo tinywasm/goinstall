@@ -1,4 +1,5 @@
 # goinstall
+<img src="docs/img/badges.svg">
 
 Automated Go installer — unattended, cross-platform, version-pinned (`1.25.2` by default).
 
