@@ -1,6 +1,7 @@
 package goinstall
 
 import (
+	"os"
 	"os/exec"
 	"runtime"
 	"strings"
@@ -43,7 +44,7 @@ func (g *Goinstall) GetPath() (string, error) {
 		defaultPath = "/usr/local/go/bin/go"
 	}
 
-	if _, err := exec.LookPath(defaultPath); err == nil {
+	if _, err := os.Stat(defaultPath); err == nil {
 		return defaultPath, nil
 	}
 
@@ -56,4 +57,8 @@ func IsInstalled(opts ...Option) bool {
 
 func GetVersion(opts ...Option) (string, error) {
 	return New(opts...).GetVersion()
+}
+
+func GetPath(opts ...Option) (string, error) {
+	return New(opts...).GetPath()
 }

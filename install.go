@@ -72,15 +72,3 @@ func Install(opts ...Option) error {
 	return New(opts...).Install()
 }
 
-func (g *Goinstall) removeExisting() error {
-	g.log("Removing existing Go installation...")
-	if runtime.GOOS == "windows" {
-		// On Windows, MSI handles upgrades/removals, but we can try to clean up the folder
-		// Alternatively, we could run msiexec /x, but we need the product code.
-		// For simplicity, let's assume the script handles it or MSI does.
-		return nil
-	}
-
-	cmd := exec.Command("sudo", "rm", "-rf", "/usr/local/go", "/usr/local/bin/go")
-	return cmd.Run()
-}

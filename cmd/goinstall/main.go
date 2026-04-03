@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cdvelop/goinstall"
+	"github.com/tinywasm/goinstall"
 )
 
 func main() {
