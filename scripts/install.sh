@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-# Default version if not provided
-GO_VERSION=${1:-"1.25.2"}
+# Version is required as first argument
+GO_VERSION=${1:?"Usage: install.sh <version>  (e.g. install.sh 1.25.2)"}
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)

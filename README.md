@@ -7,113 +7,65 @@ Installs Go following the official instructions at https://go.dev/doc/install
 
 ---
 
-## Quick Start — Which script do I run?
+## Quick Start — One command, no git required
 
-| My system | Script to use |
-|-----------|---------------|
-| Linux (Ubuntu, Debian, Arch…) | `scripts/install.sh` |
-| macOS | `scripts/install.sh` |
-| Windows | `scripts/install.ps1` |
+### Linux / macOS
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/tinywasm/goinstall/main/scripts/install.sh | sudo bash -s 1.25.2
+```
+
+### Windows (PowerShell as Administrator)
+
+```powershell
+$env:GO_VERSION="1.25.2"; irm https://raw.githubusercontent.com/tinywasm/goinstall/main/scripts/install.ps1 | iex
+```
+
+### After install
+
+```bash
+hash -r        # Linux/macOS: clear shell cache (once per terminal)
+go version     # expected: go version go1.25.2
+```
+
+> On Windows, open a **new** PowerShell window — the MSI updates PATH in the registry
+> and the current window does not pick up the change.
 
 ---
 
-## Linux / macOS — Step by step
+## What each script does
 
-### 1. Clone or download the repo
+### install.sh (Linux + macOS)
 
-```bash
-git clone https://github.com/tinywasm/goinstall.git
-cd goinstall
-```
-
-### 2. Give the script execute permission
-
-```bash
-chmod +x scripts/install.sh
-```
-
-### 3. Run with sudo (required — installs to /usr/local)
-
-```bash
-sudo bash scripts/install.sh
-```
-
-To install a specific version:
-
-```bash
-sudo bash scripts/install.sh 1.25.2
-```
-
-### 4. Verify
-
-```bash
-hash -r          # clear shell cache (run this once in the same terminal)
-go version       # expected: go version go1.25.2 linux/amd64
-```
-
-> **Why `hash -r`?** If you had an older Go installed, your shell cached the old path.
-> `hash -r` tells the shell to look up commands again. Only needed once per terminal session.
-
-### What the script does
-
-1. Detects your OS (`linux` or `darwin`) and architecture (`amd64` or `arm64`)
+1. Detects OS (`linux` / `darwin`) and architecture (`amd64` / `arm64`)
 2. Downloads `go1.25.2.OS-ARCH.tar.gz` from `https://go.dev/dl/`
 3. Removes any existing `/usr/local/go`
 4. Extracts the archive to `/usr/local`
-5. Creates a symlink: `/usr/local/bin/go → /usr/local/go/bin/go`
+5. Creates symlink: `/usr/local/bin/go` -> `/usr/local/go/bin/go`
 6. Verifies with `go version`
 7. Deletes the downloaded archive
 
----
-
-## Windows — Step by step
-
-### 1. Open PowerShell as Administrator
-
-Press `Win + X` → select **Windows PowerShell (Admin)** or **Terminal (Admin)**.
-
-### 2. Allow script execution (one-time setup)
-
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-### 3. Clone or download the repo
-
-```powershell
-git clone https://github.com/tinywasm/goinstall.git
-cd goinstall
-```
-
-### 4. Run the script
-
-```powershell
-.\scripts\install.ps1
-```
-
-To install a specific version:
-
-```powershell
-.\scripts\install.ps1 1.25.2
-```
-
-### 5. Verify
-
-Open a **new** PowerShell window, then:
-
-```powershell
-go version    # expected: go version go1.25.2 windows/amd64
-```
-
-> **Why a new window?** The Windows MSI installer updates the PATH in the registry.
-> The current window does not pick up the change — a new window does.
-
-### What the script does
+### install.ps1 (Windows)
 
 1. Downloads `go1.25.2.windows-amd64.msi` from `https://go.dev/dl/`
 2. Runs the MSI installer silently (`/quiet /norestart`)
 3. Verifies with `go version`
 4. Deletes the downloaded MSI
+
+---
+
+## Alternative: clone and run locally
+
+If you prefer to inspect the script before running:
+
+```bash
+git clone https://github.com/tinywasm/goinstall.git
+cd goinstall
+# Linux/macOS
+sudo bash scripts/install.sh
+# Windows (PowerShell as Admin)
+.\scripts\install.ps1
+```
 
 ---
 
@@ -164,10 +116,10 @@ goinstall.WithAfterInstall(func(goPath string) error {...}) // run after install
 
 ## Permissions
 
-| Platform | Requires |
-|----------|----------|
-| Linux / macOS | `sudo` — installs to `/usr/local` |
-| Windows | Administrator PowerShell — MSI needs admin rights |
+| Platform | Requires | Why |
+|----------|----------|-----|
+| Linux / macOS | `sudo` | Installs to `/usr/local` |
+| Windows | Administrator PowerShell | MSI needs admin rights |
 
 ---
 
@@ -180,16 +132,18 @@ go version
 ```
 
 **`go: command not found` after install (Windows)**
+
 Open a new PowerShell or terminal window.
 
 **`permission denied` on Linux/macOS**
-Make sure you ran the script with `sudo`:
+
 ```bash
-sudo bash scripts/install.sh
+curl -fsSL ... | sudo bash    # note: sudo goes before bash, not before curl
 ```
 
 **Wrong version shown**
-The shell is using a cached or different Go. Check which one is active:
+
+The shell is using a cached or different Go:
 ```bash
 which go          # Linux/macOS
 where go          # Windows
